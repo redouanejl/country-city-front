@@ -1,0 +1,56 @@
+<p-toast position="top-right"></p-toast>
+<div class="container">
+  <p-toolbar styleClass="my-4">
+    <ng-template pTemplate="right">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success" (click)="openNew()"></button>
+    </ng-template>
+  </p-toolbar>
+  <div class="card">
+    <p-table #dt [value]="countries" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+             [showCurrentPageReport]="true">
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          <h5 class="p-m-0">Manage Countries</h5>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-country>
+        <tr>
+          <td>{{country.id}}</td>
+          <td>{{country.name}}</td>
+          <td>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="editCountry(country)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="deleteCountry(country)"></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          In total there are {{countries ? countries.length : 0 }} products.
+        </div>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-dialog [(visible)]="countryDialog" [style]="{width: '450px'}" header="Country Details" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="p-field">
+      <label for="name">Name</label>
+      <input type="text" pInputText id="name" [(ngModel)]="country.name" required autofocus />
+      <br>
+      <small class="p-error" *ngIf="!country">Name is required.</small>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCountry()"></button>
+  </ng-template>
+</p-dialog>

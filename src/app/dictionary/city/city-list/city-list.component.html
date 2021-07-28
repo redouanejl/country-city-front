@@ -1,0 +1,60 @@
+<p-toast position="top-right"></p-toast>
+<div class="container">
+  <p-toolbar styleClass="my-4">
+    <ng-template pTemplate="right">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success" (click)="openNew()"></button>
+    </ng-template>
+  </p-toolbar>
+  <div class="card">
+    <p-table #dt [value]="cities" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+             [showCurrentPageReport]="true">
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          <h5 class="p-m-0">Manage Cities</h5>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Country</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-city let-ri="rowIndex">
+        <tr>
+          <td>{{city.id}}</td>
+          <td>{{city.name}}</td>
+          <td>{{city.country.name}}</td>
+          <td>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mx-2" (click)="editCity(city,ri)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mx-2" (click)="deleteCity(city)"></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          In total there are {{cities ? cities.length : 0 }} products.
+        </div>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-dialog [(visible)]="cityDialog" [style]="{width: '500px'}" header="city Details" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="p-field my-2">
+      <label for="name">Name</label>
+      <input type="text" pInputText id="name" [(ngModel)]="city.name" required autofocus />
+    </div>
+    <div class="p-field my-2">
+      <label for="name">Country</label>
+      <p-dropdown [options]="countries" [(ngModel)]="city.country" optionLabel="name"></p-dropdown>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCity()"></button>
+  </ng-template>
+</p-dialog>
